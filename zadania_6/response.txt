@@ -1,0 +1,5 @@
+New object
+Updated object: {u'zibi': u'top', u'nr': 1}
+Get player: {u'zibi': u'top', u'nr': 9999}
+Object deleted.
+Get player: None
