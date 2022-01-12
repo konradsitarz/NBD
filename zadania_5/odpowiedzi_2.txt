@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8DAbyfUd7xeMgQomMeawMU3cF3+bLAgA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s24054>; rel="up"
+Last-Modified: Wed, 12 Jan 2022 20:48:21 GMT
+ETag: "6ITEDCBw9T03UdDAgajzSq"
+Date: Wed, 12 Jan 2022 20:50:57 GMT
+Content-Type: application/json
+Content-Length: 63
+
+{"id": "1", "name": "Adam", "lastname": "Abacki", "weight": 80}

@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+X-Riak-Vclock: a85hYGBgzGDKBVI8DAbyfUfnCptDhBKZ8lgZlu0Nvs2XBQA=
+Vary: Accept-Encoding
+Server: MochiWeb/1.1 WebMachine/1.10.9 (cafe not found)
+Link: </buckets/s24054>; rel="up"
+Last-Modified: Wed, 12 Jan 2022 21:01:26 GMT
+ETag: "jauyMjbgyXQ09pprbWorI"
+Date: Wed, 12 Jan 2022 21:02:05 GMT
+Content-Type: application/json
+Content-Length: 22
+
+{"turnament": "Wisla"}
