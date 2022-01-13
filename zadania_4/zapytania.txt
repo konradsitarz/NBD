@@ -1,0 +1,27 @@
+// 1 
+MATCH (start:town {name: "Darjeeling"}), (meta:peak {name: "Sandakphu"}) 
+MATCH path = allShortestPaths((start)-[*]->(meta)) 
+RETURN path
+
+// 2
+MATCH (start:town {name: "Darjeeling"}), (meta:peak {name: "Sandakphu"}) 
+MATCH path = allShortestPaths((start)-[*]->(meta)) 
+WHERE ALL (r IN relationships(path) WHERE r.winter = "true")
+RETURN path
+
+// 3 
+MATCH path = ((start:town{name: "Darjeeling"})-[relation*..6]-(meta:peak { name:"Sandakphu" }))
+RETURN path, REDUCE(addDistance=0, r IN relation |addDistance + r.distance) AS total
+ORDER BY total ASC
+
+
+// 4
+MATCH path = ()-[o:ORIGIN]->(a:Airport) RETURN a, COUNT(o) AS total
+ORDER BY total ASC
+
+
+// 5
+MATCH base = (origin:Airport { name:"LAX" })<-[:ORIGIN]-(:Flight)-[:ORIGIN|DESTINATION*..10]->(destination:Airport)
+WHERE REDUCE(price = 0, n IN [x IN NODES(base) WHERE 'Flight' IN LABELS(x)] |
+  price + [(n)<-[:ASSIGN]-(ticket) | ticket.price][0]) < 3000
+RETURN base
