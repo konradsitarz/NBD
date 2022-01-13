@@ -1,0 +1,62 @@
+1. Wszystkie filmy
+MATCH (movie:Movie) RETURN movie
+
+2. Wszystkie filmy, w których grał Hugo Weaving 
+MATCH (hugo: Person {name: "Hugo Weaving"})-[:ACTED_IN]->(hugoMovies) 
+RETURN hugo, hugoMovies
+
+3. Reżyserzy filmów, w których grał Hugo Weaving 
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(movies)<-[:DIRECTED]-(directors) 
+RETURN directors
+
+4. Wszystkie osoby, z którymi Hugo Weaving grał w tych samych filmach 
+MATCH (hugo:Person {name: "Hugo Weaving"})-[:ACTED_IN]->(movies)<-[:ACTED_IN]-(coActors) 
+RETURN coActors
+
+5. Wszystkie filmy osób, które grały w Matrix
+MATCH (matrix {title: "The Matrix"})<-[:ACTED_IN]-(actors)-[:ACTED_IN]->(movies)
+RETURN movies
+
+
+6. Listę aktorów (aktor = osoba, która grała przynajmniej w jednym filmie) wraz z ilością filmów, w których grali 
+MATCH (actor:Person)-[:ACTED_IN]->(actorMovies) 
+WITH actor, count(actorMovies) as cnt 
+WHERE cnt > 0 
+RETURN actor, cnt
+
+7. Listę osób, które napisały scenariusz filmu, które wyreżyserowały wraz z tytułami takich filmów (koniunkcja – ten sam autor scenariusza i reżyser) 
+MATCH (actor:Person)-[:DIRECTED]->(movie)<-[:WROTE]-(writer) 
+WHERE writer=actor 
+RETURN actor, movie
+
+8. Listę filmów, w których grał zarówno Hugo Weaving jak i Keanu Reeves 
+MATCH (hugo: Person {name: "Hugo Weaving"})-[:ACTED_IN]->(movie)<-[:ACTED_IN]-(keanu: Person {name: "Keanu Reeves"}) 
+RETURN movie
+
+9. (za 0.2pkt) Zestaw zapytań powodujących uzupełnienie bazy danych o film Captain America: The First Avenger wraz z uzupełnieniem informacji o reżyserze, scenarzystach i odtwórcach głównych ról (w oparciu o skrócone informacje z IMDB - http://www.imdb.com/title/tt0458339/) + zapytanie pokazujące dodany do bazy film wraz odtwórcami głównych ról, scenarzystą i reżyserem. Plik SVG ma pokazywać wynik ostatniego zapytania.  
+
+
+CREATE (Captain_America:Movie {
+    title:'Captain America: The First Avenger', 
+    released:2011, 
+    tagline:"Steve Rogers, a rejected military soldier, transforms into Captain America after taking a dose of a Super-Soldier serum. But being Captain America comes at a price as he attempts to take down a war monger and a terrorist organization."
+})
+
+CREATE (markus:Person {name:'Christopher Markus', born:1970})
+CREATE (mcfelly:Person {name:'Stephen McFeely', born:1969})
+CREATE (evans:Person {name:'Chris Evans', born:1981})
+CREATE (jackson:Person {name:'Samuel L. Jackson', born:1948})
+CREATE (weaving:Person {name:'Hugo Weaving', born:1960})
+CREATE (johnston:Person {name:'Joe Johnston', born:1950 })
+CREATE (atwell:Person {name:'Hayley Atwell', born:1982 })
+
+CREATE (johnston)-[:DIRECTED]->(Captain_America),
+(evans)-[:ACTED_IN]->(Captain_America),
+(atwell)-[:ACTED_IN]->(Captain_America),
+(weaving)-[:ACTED_IN]->(Captain_America),
+(jackson)-[:ACTED_IN]->(Captain_America),
+(mcfelly)-[:WROTE]->(Captain_America)
+(markus)-[:WROTE]->(Captain_America),
+
+MATCH (movie:Movie {title: 'Captain America: The First Avenger'})-[relation:ACTED_IN|DIRECTED|WROTE]-(person) 
+RETURN movie, person
